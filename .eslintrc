@@ -1,0 +1,37 @@
+{
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2020,
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "browser": true,
+    "jest": true
+  },
+  "extends": ["airbnb", "airbnb/hooks", "prettier", "prettier/react"],
+  "plugins": [],
+  "rules": {
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    //"comma-dangle": ["error", "always-multiline"],
+    "semi": ["error", "always", { "omitLastInOneLineBlock": false }],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "no-param-reassign": ["error", { "props": false }],
+    "no-return-assign": ["error", "except-parens"],
+    "react/prop-types": "error",
+    "react/jsx-fragments": ["error", "element"],
+    "react/no-array-index": "off",
+    "jsx-a11y/click-events-have-key-events": 0
+  },
+  "settings": {
+    // Allows us to lint absolute imports within codebase
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": ["node_modules", "src/"]
+      }
+    }
+  }
+}
