@@ -50,6 +50,11 @@
     "react-router-dom": "^5.1.2",
     "styled-components": "^5.0.1"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "eslint --fix",
