@@ -2,13 +2,14 @@
 // 1: fetchClient(...).then().catch();
 // 2: const req = fetchClient(...); req.then().catch(); req.abort();
 // 3: const response = await fetchClient(...).promise;
-export default function fetchClient({ method, url, headers, body }) {
+// 4: const req = fetchClient(...); const response = await.promise; req.abort();
+export default function fetchClient({ method, url, headers = {}, body }) {
   const req = new XMLHttpRequest();
   const promise = new Promise((resolve, reject) => {
     req.onreadystatechange = () => {
       if (req.readyState !== 4) return;
       if (req.status >= 200 && req.status < 300) {
-        resolve(req);
+        resolve(req.response);
       } else {
         reject(
           Error(

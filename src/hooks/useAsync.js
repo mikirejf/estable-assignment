@@ -5,7 +5,7 @@ import fetchClient from 'utils/fetchClient';
 const initialState = {
   isLoading: false,
   error: null,
-  data: null,
+  response: null,
 };
 
 function reducer(state, action) {
@@ -14,21 +14,21 @@ function reducer(state, action) {
       return {
         ...state,
         isLoading: true,
-        data: null,
+        response: null,
         error: null,
       };
     case 'SUCCESS':
       return {
         ...state,
         isLoading: false,
-        data: action.payload,
+        response: action.payload,
         error: null,
       };
     case 'ERROR':
       return {
         ...state,
         isLoading: false,
-        data: null,
+        response: null,
         error: action.payload,
       };
     default:
@@ -42,8 +42,9 @@ export default function useAsync({ method, url, headers, body }) {
   const send = async () => {
     dispatch({ type: 'INIT' });
     try {
-      const req = await fetchClient({ method, url, headers, body }).promise;
-      dispatch({ type: 'SUCCESS', payload: req.response });
+      const response = await fetchClient({ method, url, headers, body })
+        .promise;
+      dispatch({ type: 'SUCCESS', payload: response });
     } catch (error) {
       dispatch({ type: 'ERROR', payload: error });
     }

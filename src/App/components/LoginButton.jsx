@@ -41,11 +41,11 @@ export default function LoginButton() {
   });
 
   useEffect(() => {
-    if (state.data) {
-      storeAuthToken(state.data);
+    if (state.response) {
+      storeAuthToken(state.response);
       dispatch({ type: 'AUTHENTICATED' });
     }
-  }, [state.data, dispatch]);
+  }, [state.response, dispatch]);
 
   return (
     <Wrapper>
