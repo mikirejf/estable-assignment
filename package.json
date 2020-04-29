@@ -43,9 +43,11 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
+    "moment": "^2.24.0",
     "normalize.css": "^8.0.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
+    "react-big-calendar": "^0.24.5",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
     "styled-components": "^5.0.1"
