@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server",
+    "build": "webpack --config webpack.config.production.js --progress",
     "lint": "eslint --ext .js --ext .jsx .",
     "prettify": "prettier --write .",
     "test": "jest",
@@ -52,7 +53,6 @@
     "react": "^16.13.1",
     "react-big-calendar": "^0.24.5",
     "react-dom": "^16.13.1",
-    "react-router-dom": "^5.1.2",
     "styled-components": "^5.0.1"
   },
   "husky": {
