@@ -1,13 +1,13 @@
 const KEY = 'auth_token';
 
-export function getStoredAuthToken() {
+export function getStoredAuthTokens() {
   return JSON.parse(window.localStorage.getItem(KEY));
 }
 
-export function storeAuthToken(data) {
+export function storeAuthTokens(data) {
   window.localStorage.setItem(KEY, data);
 }
 
-export function removeStoredAuthToken() {
+export function removeStoredAuthTokens() {
   window.localStorage.removeItem(KEY);
 }

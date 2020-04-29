@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { getStoredAuthToken } from 'utils/authToken';
+import { getStoredAuthTokens } from 'utils/authTokens';
 
 const GlobalStateContext = React.createContext();
 const initialState = {
-  authenticated: !!getStoredAuthToken() || false,
+  authenticated: !!getStoredAuthTokens() || false,
 };
 
 function stateReducer(state, action) {

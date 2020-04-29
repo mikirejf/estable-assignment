@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import endpoints from 'utils/endpoints';
-import { storeAuthToken } from 'utils/authToken';
+import { storeAuthTokens } from 'utils/authTokens';
 import useAsync from 'hooks/useAsync';
 import { useGlobalState } from 'App/GlobalStateProvider';
 import Spinner from './Spinner';
@@ -42,7 +42,7 @@ export default function LoginButton() {
 
   useEffect(() => {
     if (state.response) {
-      storeAuthToken(state.response);
+      storeAuthTokens(state.response);
       dispatch({ type: 'LOGIN' });
     }
   }, [state.response, dispatch]);

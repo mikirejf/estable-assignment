@@ -1,10 +1,10 @@
 import { useReducer } from 'react';
 
 import {
-  storeAuthToken,
-  getStoredAuthToken,
-  removeStoredAuthToken,
-} from 'utils/authToken';
+  storeAuthTokens,
+  getStoredAuthTokens,
+  removeStoredAuthTokens,
+} from 'utils/authTokens';
 import { useGlobalState } from 'App/GlobalStateProvider';
 import fetchClient from 'utils/fetchClient';
 import endpoints from 'utils/endpoints';
@@ -55,19 +55,21 @@ async function generateTokenRefreshRequest(oldAuthTokens) {
 export default function useAsync({ method, url, headers, body }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { dispatch: globalDispatch } = useGlobalState();
-  const authToken = getStoredAuthToken();
+  let authTokens;
 
   const logout = () => {
-    removeStoredAuthToken();
+    removeStoredAuthTokens();
     globalDispatch({ type: 'LOGOUT' });
   };
 
   const generateRequest = () => {
+    authTokens = getStoredAuthTokens();
     let requestHeaders = headers;
-    if (authToken) {
+
+    if (authTokens) {
       requestHeaders = {
         ...headers,
-        authorization: `Bearer ${authToken.token}`,
+        authorization: `Bearer ${authTokens.token}`,
       };
     }
     return fetchClient({ method, url, headers: requestHeaders, body }).promise;
@@ -82,10 +84,10 @@ export default function useAsync({ method, url, headers, body }) {
       const errorObj = JSON.parse(error.message);
 
       if (errorObj.status === 401) {
-        if (authToken) {
+        if (authTokens) {
           try {
-            const newAuthTokens = await generateTokenRefreshRequest(authToken);
-            storeAuthToken(newAuthTokens);
+            const newAuthTokens = await generateTokenRefreshRequest(authTokens);
+            storeAuthTokens(newAuthTokens);
             try {
               const retryResponse = await generateRequest();
               dispatch({ type: 'SUCCESS', payload: retryResponse });
