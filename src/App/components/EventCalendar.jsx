@@ -39,11 +39,16 @@ export default function EventCalendar() {
       const {
         data: { calendar },
       } = JSON.parse(state.response);
-      const calendarEvents = calendar.map((event) => ({
-        title: `${event.track.name} (${event.country})`,
-        start: new Date(event.firstRaceTimeUtc),
-        end: new Date(event.firstRaceTimeUtc),
-      }));
+
+      const calendarEvents = calendar
+        .map((event) => ({
+          canceled: event.canceled,
+          title: `${event.track.name} (${event.country})`,
+          start: new Date(event.firstRaceTimeUtc),
+          end: new Date(event.firstRaceTimeUtc),
+        }))
+        .filter((event) => !event.canceled);
+
       setEvents(calendarEvents);
     }
   }, [state.response]);
