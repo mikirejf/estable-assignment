@@ -37,7 +37,10 @@ export default function LoginButton() {
     method: 'POST',
     url: endpoints.login,
     headers: { 'content-type': 'application/json' },
-    body: { email: 'andrej.premrn@gmail.com', password: 'preAnd04' },
+    body: {
+      email: process.env.API_USERNAME,
+      password: process.env.API_PASSWORD,
+    },
   });
 
   useEffect(() => {
