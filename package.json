@@ -7,7 +7,8 @@
     "start": "webpack-dev-server",
     "lint": "eslint --ext .js --ext .jsx .",
     "prettify": "prettier --write .",
-    "test": "jest --watch"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "author": "Andrej Premrn",
   "license": "ISC",
@@ -16,6 +17,8 @@
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.1",
     "@svgr/webpack": "^5.3.0",
+    "@testing-library/jest-dom": "^5.5.0",
+    "@testing-library/react": "^10.0.3",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^25.1.0",
     "babel-loader": "^8.1.0",
