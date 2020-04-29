@@ -43,7 +43,7 @@ export default function LoginButton() {
   useEffect(() => {
     if (state.response) {
       storeAuthToken(state.response);
-      dispatch({ type: 'AUTHENTICATED' });
+      dispatch({ type: 'LOGIN' });
     }
   }, [state.response, dispatch]);
 

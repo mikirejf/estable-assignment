@@ -10,10 +10,15 @@ const initialState = {
 
 function stateReducer(state, action) {
   switch (action.type) {
-    case 'AUTHENTICATED':
+    case 'LOGIN':
       return {
         ...state,
         authenticated: true,
+      };
+    case 'LOGOUT':
+      return {
+        ...state,
+        authenticated: false,
       };
     default: {
       throw Error(`Unknown dispatch action '${action.type}'!`);
@@ -23,8 +28,6 @@ function stateReducer(state, action) {
 
 function GlobalStateProvider({ children }) {
   const [state, dispatch] = React.useReducer(stateReducer, initialState);
-
-  console.log('global', state);
 
   return (
     <GlobalStateContext.Provider value={{ state, dispatch }}>
