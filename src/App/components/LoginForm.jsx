@@ -52,8 +52,8 @@ export default function LoginForm() {
     url: endpoints.login,
     headers: { 'content-type': 'application/json' },
   });
-  const [email, setEmail] = useState('andrej.premrn@gmail.com');
-  const [password, setPassword] = useState('preAnd04');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
