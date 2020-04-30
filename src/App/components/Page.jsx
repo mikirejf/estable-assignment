@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { useGlobalState } from 'App/GlobalStateProvider';
-import LoginButton from './LoginButton';
+import LoginButton from './LoginForm';
 import EventCalendar from './EventCalendar';
 
 const StyledContainer = styled.div`

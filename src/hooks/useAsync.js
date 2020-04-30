@@ -52,19 +52,21 @@ async function generateTokenRefreshRequest(oldAuthTokens) {
   }).promise;
 }
 
-export default function useAsync({ method, url, headers, body }) {
+export default function useAsync({ method, url, headers, body: initialBody }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { dispatch: globalDispatch } = useGlobalState();
-  let authTokens;
+  let authTokens = getStoredAuthTokens();
 
   const logout = () => {
     removeStoredAuthTokens();
     globalDispatch({ type: 'LOGOUT' });
   };
 
-  const generateRequest = () => {
-    authTokens = getStoredAuthTokens();
+  const generateRequest = (body) => {
     let requestHeaders = headers;
+    const requestBody = body || initialBody;
+
+    authTokens = getStoredAuthTokens();
 
     if (authTokens) {
       requestHeaders = {
@@ -72,13 +74,18 @@ export default function useAsync({ method, url, headers, body }) {
         authorization: `Bearer ${authTokens.token}`,
       };
     }
-    return fetchClient({ method, url, headers: requestHeaders, body }).promise;
+    return fetchClient({
+      method,
+      url,
+      headers: requestHeaders,
+      body: requestBody,
+    }).promise;
   };
 
-  const send = async () => {
+  const send = async (body) => {
     dispatch({ type: 'INIT' });
     try {
-      const response = await generateRequest();
+      const response = await generateRequest(body);
       dispatch({ type: 'SUCCESS', payload: response });
     } catch (error) {
       const errorObj = JSON.parse(error.message);
@@ -89,7 +96,7 @@ export default function useAsync({ method, url, headers, body }) {
             const newAuthTokens = await generateTokenRefreshRequest(authTokens);
             storeAuthTokens(newAuthTokens);
             try {
-              const retryResponse = await generateRequest();
+              const retryResponse = await generateRequest(body);
               dispatch({ type: 'SUCCESS', payload: retryResponse });
             } catch (retryError) {
               dispatch({ type: 'ERROR', payload: retryError });

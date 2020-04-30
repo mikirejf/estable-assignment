@@ -3,20 +3,24 @@ import { render } from '@testing-library/react';
 import { toBeInTheDocument } from '@testing-library/jest-dom/matchers';
 
 import { GlobalStateProvider } from 'App/GlobalStateProvider';
-import LoginButton from 'App/components/LoginButton';
+import LoginForm from 'App/components/LoginForm';
 
 expect.extend({ toBeInTheDocument });
 
-const { getByText } = render(
+const { getByLabelText, getByText } = render(
   <GlobalStateProvider>
-    <LoginButton />
+    <LoginForm />
   </GlobalStateProvider>
 );
 
-describe('LoginButton', () => {
-  const loginButton = getByText('Login as Andrej Premrn');
+describe('LoginForm', () => {
+  const emailInput = getByLabelText('Email');
+  const passwordInput = getByLabelText('Password');
+  const loginButton = getByText('Login');
 
   test('it renders', () => {
+    expect(emailInput).toBeInTheDocument();
+    expect(passwordInput).toBeInTheDocument();
     expect(loginButton).toBeInTheDocument();
   });
 });

@@ -4,15 +4,7 @@
 
 1. Clone the repo.
 2. Run `npm install` inside the project folder to install the dependencies.
-3. In the project's root, create `.env` file (or expose the environment variables manually) for API credentials.
-4. Run `npm start` to run the project in development mode.
-
-`.env` example:
-
-```
-API_USERNAME=<username>
-API_PASSWORD=<password>
-```
+3. Run `npm start` to run the project in development mode.
 
 You can also run:
 

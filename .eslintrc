@@ -15,7 +15,6 @@
   "plugins": [],
   "rules": {
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
-    //"comma-dangle": ["error", "always-multiline"],
     "semi": ["error", "always", { "omitLastInOneLineBlock": false }],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
@@ -24,7 +23,8 @@
     "react/prop-types": "error",
     "react/jsx-fragments": ["error", "element"],
     "react/no-array-index": "off",
-    "jsx-a11y/click-events-have-key-events": 0
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/label-has-associated-control": "off"
   },
   "settings": {
     // Allows us to lint absolute imports within codebase
