@@ -83,15 +83,12 @@ export default function EventCalendar() {
   };
 
   useEffect(() => {
-    if (state.view === 'agenda') {
-      return;
-    }
-
+    // We also populate 'week' and 'day' views if we load data for a whole month
     const startDate = formatDate(
-      moment(state.currentViewStartDate).startOf(state.view)
+      moment(state.currentViewStartDate).startOf('month')
     );
     const endDate = formatDate(
-      moment(state.currentViewStartDate).endOf(state.view)
+      moment(state.currentViewStartDate).endOf('month')
     );
 
     makeRequest({
@@ -106,7 +103,7 @@ export default function EventCalendar() {
         }
       }`,
     });
-  }, [state.currentViewStartDate, state.view, makeRequest]);
+  }, [state.currentViewStartDate, makeRequest]);
 
   useEffect(() => {
     if (asyncReq.response) {
