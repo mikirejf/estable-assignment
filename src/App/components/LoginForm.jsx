@@ -8,13 +8,17 @@ import { useGlobalState } from 'App/GlobalStateProvider';
 import Spinner from './Spinner';
 
 const Container = styled.form`
-  width: 500px;
-  height: 250px;
+  height: 350px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   font-family: sans-serif;
+  padding: 40px 20px;
+  border-radius: 3px;
+  background-color: #ffffff;
+  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14),
+    0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2);
 `;
 
 const Input = styled.input`
@@ -22,9 +26,15 @@ const Input = styled.input`
   width: 300px;
   height: 60px;
   padding: 10px;
+  margin-top: 2px;
   font-weight: 500;
   border: 2px solid #8474a2;
   border-radius: 4px;
+`;
+
+const Label = styled.label`
+  color: #8374a2;
+  font-weight: 600;
 `;
 
 const Button = styled.button`
@@ -43,6 +53,10 @@ const Button = styled.button`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const StyledSpinner = styled(Spinner)`
+  position: absolute;
 `;
 
 export default function LoginForm() {
@@ -69,7 +83,7 @@ export default function LoginForm() {
 
   return (
     <Container onSubmit={handleSubmit}>
-      <label>
+      <Label>
         Email
         <Input
           type="text"
@@ -77,8 +91,8 @@ export default function LoginForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-      </label>
-      <label>
+      </Label>
+      <Label>
         Password
         <Input
           type="password"
@@ -86,9 +100,9 @@ export default function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-      </label>
+      </Label>
       <Button type="submit" disabled={state.isLoading}>
-        {state.isLoading ? <Spinner size="30px" /> : 'Login'}
+        {state.isLoading ? <StyledSpinner size="30px" /> : 'Login'}
       </Button>
       {state.error ? 'Something went wrong, please try again.' : null}
     </Container>

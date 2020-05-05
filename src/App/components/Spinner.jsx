@@ -17,10 +17,15 @@ const StyledSpinner = styled.div`
   animation: 1s ${spin} linear infinite;
 `;
 
-export default function Spinner({ size }) {
-  return <StyledSpinner size={size} />;
+export default function Spinner({ size, className }) {
+  return <StyledSpinner size={size} className={className} />;
 }
+
+Spinner.defaultProps = {
+  className: '',
+};
 
 Spinner.propTypes = {
   size: PropTypes.string.isRequired,
+  className: PropTypes.string,
 };

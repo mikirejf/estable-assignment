@@ -9,8 +9,8 @@ export default createGlobalStyle`
     box-sizing: inherit;
   }
 
-  body {
-    background-color: #fafafa;
+  body {  
+    background: linear-gradient(to right, #E9E4F0, #D3CCE3);
     font-family: sans-serif;
   }
 
