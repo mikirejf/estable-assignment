@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import useAsync from 'hooks/useAsync';
 import endpoints from 'utils/endpoints';
+import toast from 'utils/toast';
 import Spinner from './Spinner';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -123,6 +124,16 @@ export default function EventCalendar() {
       dispatch({ type: 'EVENTS_LOADED', payload: calendarEvents });
     }
   }, [asyncReq.response]);
+
+  useEffect(() => {
+    if (asyncReq.error) {
+      toast.add({
+        type: 'error',
+        message: 'Something went wrong. Please try refreshing the page.',
+        duration: 5,
+      });
+    }
+  }, [asyncReq.error]);
 
   return (
     <Container>

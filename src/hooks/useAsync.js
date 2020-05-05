@@ -8,6 +8,7 @@ import {
 import { useGlobalState } from 'App/GlobalStateProvider';
 import fetchClient from 'utils/fetchClient';
 import endpoints from 'utils/endpoints';
+import toast from 'utils/toast';
 
 const initialState = {
   isLoading: false,
@@ -60,6 +61,10 @@ export default function useAsync({ method, url, headers, body: initialBody }) {
   const logout = () => {
     removeStoredAuthTokens();
     globalDispatch({ type: 'LOGOUT' });
+    toast.add({
+      type: 'info',
+      message: 'You were logged out. Please log in again.',
+    });
   };
 
   const generateRequest = (body) => {

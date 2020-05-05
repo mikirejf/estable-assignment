@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import styled from 'styled-components';
 
 import endpoints from 'utils/endpoints';
 import { storeAuthTokens } from 'utils/authTokens';
 import useAsync from 'hooks/useAsync';
 import { useGlobalState } from 'App/GlobalStateProvider';
+import toast from 'utils/toast';
 import Spinner from './Spinner';
 
 const Container = styled.form`
@@ -59,6 +60,22 @@ const StyledSpinner = styled(Spinner)`
   position: absolute;
 `;
 
+function generateErrorToastMessage(errorMessage) {
+  const errorObj = JSON.parse(errorMessage);
+  const errorResponseFields = Object.keys(errorObj.response);
+  const errors = errorResponseFields.reduce((temp, field) => {
+    const fieldErrors = errorObj.response[field];
+    return [...temp, ...fieldErrors];
+  }, []);
+
+  return errors.map((error) => (
+    <Fragment key={error}>
+      - {error}
+      <br />
+    </Fragment>
+  ));
+}
+
 export default function LoginForm() {
   const { dispatch } = useGlobalState();
   const { state, send } = useAsync({
@@ -80,6 +97,16 @@ export default function LoginForm() {
       dispatch({ type: 'LOGIN' });
     }
   }, [state.response, dispatch]);
+
+  useEffect(() => {
+    if (state.error) {
+      toast.add({
+        type: 'error',
+        message: generateErrorToastMessage(state.error.message),
+        duration: 5,
+      });
+    }
+  }, [state.error]);
 
   return (
     <Container onSubmit={handleSubmit}>
@@ -104,7 +131,6 @@ export default function LoginForm() {
       <Button type="submit" disabled={state.isLoading}>
         {state.isLoading ? <StyledSpinner size="30px" /> : 'Login'}
       </Button>
-      {state.error ? 'Something went wrong, please try again.' : null}
     </Container>
   );
 }

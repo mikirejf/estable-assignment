@@ -16,6 +16,7 @@ export default function fetchClient({ method, url, headers = {}, body }) {
             JSON.stringify({
               status: req.status,
               statusText: req.statusText,
+              response: JSON.parse(req.response),
             })
           )
         );
