@@ -1,11 +1,10 @@
-import React, { useEffect, useReducer, useCallback } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import styled from 'styled-components';
 
-import useAsync from 'hooks/useAsync';
-import endpoints from 'utils/endpoints';
 import toast from 'utils/toast';
+import useApi from 'hooks/useApi';
 import Spinner from './Spinner';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -34,6 +33,19 @@ const Dimmer = styled.div`
 const localizer = momentLocalizer(moment);
 
 const formatDate = (date) => date.format('YYYY-MM-DD');
+
+const generateCalendarQuery = (startDate, endDate) => ({
+  query: `{
+    calendar (startDate: "${startDate}" endDate: "${endDate}") {
+      country
+      canceled
+      firstRaceTimeUtc
+      track {
+        name
+      }
+    }
+  }`,
+});
 
 const initialCalendarState = {
   currentViewStartDate: new Date(),
@@ -69,16 +81,16 @@ export default function EventCalendar() {
     calendarStateReducer,
     initialCalendarState
   );
-  const { state: asyncReq, send } = useAsync({
-    method: 'POST',
-    url: endpoints.graphql,
-    headers: { 'content-type': 'application/json' },
-  });
-  const makeRequest = useCallback(send, []);
+
+  const [{ isLoading, error, response }, fetchEvents] = useApi.post(
+    '/graphql',
+    { lazy: true }
+  );
 
   const handleOnNavigate = (date) => {
     dispatch({ type: 'CHANGE_DATE', payload: date });
   };
+
   const handleOnView = (view) => {
     dispatch({ type: 'CHANGE_VIEW', payload: view });
   };
@@ -91,26 +103,14 @@ export default function EventCalendar() {
     const endDate = formatDate(
       moment(state.currentViewStartDate).endOf('month')
     );
-
-    makeRequest({
-      query: `{
-        calendar (startDate: "${startDate}" endDate: "${endDate}") {
-          country
-          canceled
-          firstRaceTimeUtc
-          track {
-            name
-          }
-        }
-      }`,
-    });
-  }, [state.currentViewStartDate, makeRequest]);
+    fetchEvents(generateCalendarQuery(startDate, endDate));
+  }, [state.currentViewStartDate, fetchEvents]);
 
   useEffect(() => {
-    if (asyncReq.response) {
+    if (response) {
       const {
         data: { calendar },
-      } = JSON.parse(asyncReq.response);
+      } = JSON.parse(response);
 
       const calendarEvents = calendar
         .map((event) => ({
@@ -121,25 +121,25 @@ export default function EventCalendar() {
         }))
         .filter((event) => !event.canceled);
 
-      dispatch({ type: 'EVENTS_LOADED', payload: calendarEvents });
+      dispatch({
+        type: 'EVENTS_LOADED',
+        payload: calendarEvents,
+      });
     }
-  }, [asyncReq.response]);
+  }, [response]);
 
   useEffect(() => {
-    if (asyncReq.error) {
+    if (error) {
       toast.add({
         type: 'error',
         message: 'Something went wrong. Please try refreshing the page.',
         duration: 5,
       });
     }
-  }, [asyncReq.error]);
+  }, [error]);
 
   return (
     <Container>
-      {asyncReq.error
-        ? 'There was an error when getting the data. Please refresh the page.'
-        : null}
       <Calendar
         date={state.currentViewStartDate}
         view={state.view}
@@ -151,7 +151,7 @@ export default function EventCalendar() {
         onNavigate={handleOnNavigate}
         onView={handleOnView}
       />
-      {asyncReq.isLoading && (
+      {isLoading && (
         <Dimmer>
           <Spinner size="100px" />
         </Dimmer>

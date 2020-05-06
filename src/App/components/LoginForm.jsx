@@ -1,11 +1,10 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import styled from 'styled-components';
 
-import endpoints from 'utils/endpoints';
 import { storeAuthTokens } from 'utils/authTokens';
-import useAsync from 'hooks/useAsync';
 import { useGlobalState } from 'App/GlobalStateProvider';
 import toast from 'utils/toast';
+import useApi from 'hooks/useApi';
 import Spinner from './Spinner';
 
 const Container = styled.form`
@@ -78,35 +77,34 @@ function generateErrorToastMessage(errorMessage) {
 
 export default function LoginForm() {
   const { dispatch } = useGlobalState();
-  const { state, send } = useAsync({
-    method: 'POST',
-    url: endpoints.login,
-    headers: { 'content-type': 'application/json' },
-  });
+  const [
+    { isLoading, response, error },
+    submitForm,
+  ] = useApi.post('/users/account/login', { lazy: true });
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    send({ email, password });
+    submitForm({ email, password });
   };
 
   useEffect(() => {
-    if (state.response) {
-      storeAuthTokens(state.response);
+    if (response) {
+      storeAuthTokens(response);
       dispatch({ type: 'LOGIN' });
     }
-  }, [state.response, dispatch]);
+  }, [response, dispatch]);
 
   useEffect(() => {
-    if (state.error) {
+    if (error) {
       toast.add({
         type: 'error',
-        message: generateErrorToastMessage(state.error.message),
+        message: generateErrorToastMessage(error.message),
         duration: 5,
       });
     }
-  }, [state.error]);
+  }, [error]);
 
   return (
     <Container onSubmit={handleSubmit}>
@@ -128,8 +126,8 @@ export default function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
         />
       </Label>
-      <Button type="submit" disabled={state.isLoading}>
-        {state.isLoading ? <StyledSpinner size="30px" /> : 'Login'}
+      <Button type="submit" disabled={isLoading}>
+        {isLoading ? <StyledSpinner size="30px" /> : 'Login'}
       </Button>
     </Container>
   );

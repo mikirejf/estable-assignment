@@ -16,19 +16,20 @@ export default function fetchClient({ method, url, headers = {}, body }) {
             JSON.stringify({
               status: req.status,
               statusText: req.statusText,
-              response: JSON.parse(req.response),
+              response: req.response ? JSON.parse(req.response) : '',
             })
           )
         );
       }
     };
+
     req.open(method, url);
 
-    if (headers) {
-      Object.keys(headers).forEach((key) => {
+    Object.keys(headers)
+      .filter((key) => Boolean(headers[key]))
+      .forEach((key) => {
         req.setRequestHeader(key, headers[key]);
       });
-    }
 
     const data = body ? JSON.stringify(body) : null;
     req.send(data);
