@@ -10,7 +10,7 @@ export default createGlobalStyle`
   }
 
   body {  
-    background: linear-gradient(to right, #E9E4F0, #D3CCE3);
+    background: linear-gradient(to right, #a28ac3, #D3CCE3);
     font-family: sans-serif;
   }
 
