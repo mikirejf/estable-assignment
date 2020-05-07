@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { useGlobalState } from 'App/GlobalStateProvider';
-import LoginButton from './LoginForm';
-import EventCalendar from './EventCalendar';
+import LoginButton from 'App/components/LoginForm';
+import EventCalendar from 'App/components/EventCalendar';
 
 const StyledContainer = styled.div`
   width: 100vw;
