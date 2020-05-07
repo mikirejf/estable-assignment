@@ -1,13 +1,10 @@
 import styled from 'styled-components';
 
-const colors = {
-  error: '#ce4844',
-  info: '#4889d0',
-};
+import { colors, zIndex } from 'utils/styles';
 
 export const ToastsContainer = styled.div`
   position: fixed;
-  z-index: 60;
+  z-index: ${zIndex.toasts};
   top: 30px;
   right: 50px;
   width: 350px;

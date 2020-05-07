@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { zIndex } from 'utils/styles';
+
 export const Container = styled.div`
   position: relative;
   width: 1200px;
@@ -19,5 +21,5 @@ export const Dimmer = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #15141475;
-  z-index: 5;
+  z-index: ${zIndex.dimmer};
 `;
