@@ -21,19 +21,19 @@ export const Toast = styled.div`
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
   cursor: pointer;
   transition: all 0.15s;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
   border-radius: 3px;
 
   &.toast-enter,
   &.toast-exit.toast-exit-active {
     opacity: 0;
-    right: -10px;
+    transform: translate3d(10px, 0, 0);
   }
 
   &.toast-exit,
   &.toast-enter.toast-enter-active {
     opacity: 1;
-    right: 0;
+    transform: translate3d(0px, 0, 0);
   }
 `;
 
